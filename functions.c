@@ -2,13 +2,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <locale.h>
 
-//Ð¡Ð¾Ð·Ð´Ð°ÑŽ Ñ„Ð¸Ð»ÑŒÐ¼ Ð¸ Ð¿Ñ€Ð¸ÑÐ²Ð°Ð¸Ð²Ð°ÑŽ ÐµÐ¼Ñƒ ÑƒÐºÐ°Ð·Ð°Ð½Ð½Ñ‹Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ
+//Ñîçäàþ ôèëüì è ïðèñâàèâàþ åìó óêàçàííûå çíà÷åíèÿ
 struct film* create_film(char name_film[50], int year_issue, char country[50], char genres[50], float rating){
-    //Ð’Ñ‹Ð´ÐµÐ»Ð¸Ð» Ð¿Ð°Ð¼ÑÑ‚ÑŒ Ð¿Ð¾Ð´ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ Ð¸ Ð¿Ñ€Ð¸ÑÐ²Ð¾Ð¸Ð» ÐµÐ¼Ñƒ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ
+    //Âûäåëèë ïàìÿòü ïîä ýëåìåíò è ïðèñâîèë åìó çíà÷åíèå
     struct film* film = (struct film*) malloc(sizeof(struct film));
 
-    //Ð’ÑÐµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ñ„Ð¸Ð»ÑŒÐ¼Ð°
+    //Âñå ïàðàìåòðû ôèëüìà
     strcpy(film->name, name_film);
     film -> year_issue = year_issue;
     strcpy(film->country, country);
@@ -20,79 +21,146 @@ struct film* create_film(char name_film[50], int year_issue, char country[50], c
     return film;
 }
 
-//Ð’Ñ‹Ð²Ð¾Ð´ Ð±ÐµÑÐºÐ¾Ð½ÐµÑ‡Ð½Ð¾Ð³Ð¾ ÑÐ¿Ð¸ÑÐºÐ°
+//Âûâîä áåñêîíå÷íîãî ñïèñêà
 void out_list_films(struct film* list_root){
-    struct film* current = list_root;   //ÐŸÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð°Ñ, Ñ…Ñ€Ð°Ð½ÑÑ‰Ð°Ñ Ð°Ð´Ñ€ÐµÑ Ñ‚ÐµÐºÑƒÑ‰ÐµÐ³Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð°(Ð´Ð»Ñ Ð½Ð°Ñ‡Ð°Ð»Ð° - Ð¿ÐµÑ€Ð²Ð¾Ð³Ð¾) Ð¾Ð½Ð° Ð¿ÐµÑ€ÐµÐ¼ÐµÑ‰Ð°ÐµÑ‚ÑÑ Ð¿Ð¾ Ð²ÑÐµÐ¼ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð°Ð¼
-    while(current->next != NULL){       //ÐŸÐ¾ÐºÐ° Ð½Ðµ Ð¿Ñ€Ð¸ÑˆÐµÐ» Ðº Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÐµÐ¼Ñƒ
-        printf("%s%d\n%s%s%g\n", current->name, current->year_issue, current->country, current->genres, current->rating);
-        current = current -> next;      //Ð¢ÐµÐºÑƒÑ‰Ð¸Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ Ñ€Ð°Ð²ÐµÐ½ ÑÐ»ÐµÐ´ÑƒÑŽÑ‰ÐµÐ¼Ñƒ(Ñ‚Ð°Ðº Ð¸ Ð¿Ñ€Ð¾Ð¸ÑÑ…Ð¾Ð´Ð¸Ñ‚ Ð¿ÐµÑ€ÐµÑ…Ð¾Ð´) Ð² Ð¸Ñ‚Ð¾Ð³Ðµ curren ÑƒÐºÐ°Ð·Ñ‹Ð²Ð°ÐµÑ‚ Ð½Ð° Ð¿Ð¾ÑÐ»ÐµÐ´ÑƒÑŽÑ‰Ð¸Ð¹ Ð¸ Ð² Ð¸Ñ‚Ð¾Ð³Ðµ Ð¿Ð¾ÑÐ»ÐµÐ´Ð½Ð¸Ð¹
-    }
-    printf("%s%d\n%s%s%g\n", current->name, current->year_issue, current->country, current->genres, current->rating);
+    setlocale(LC_ALL, "Russian");
+    struct film* current = list_root;   //Ïåðåìåííàÿ, õðàíÿùàÿ àäðåñ òåêóùåãî ýëåìåíòà(äëÿ íà÷àëà - ïåðâîãî) îíà ïåðåìåùàåòñÿ ïî âñåì ýëåìåíòàì
+    char n = (char)191;
+
+    //27 ñèìâîëîâ íå ñ÷èòàÿ ïîëåé
+    printf("                                      ");                              printf("%c=====================================?\n");
+    printf("                                      ");                              printf("||                                     ||\n");
+    printf("%c––––––––––––––--------–––––––––––?   ", n);                           printf("||                                     ||   ");                        printf("%c–––––--------––––––––––––––––––––?\n", n);
+    printf("|                                 |   ");                               printf("||                                     ||   ");                        printf("|                                 |\n");
+    printf("|                                 |   ");                               printf("||                                     ||   ");                        printf("|                                 |\n");
+    printf("|                                 |   ");                               printf("||                                     ||   ");                        printf("|                                 |\n");
+    out_str_center(list_root->previous->name, 33);printf("   |");out_str_center(list_root->name, 37);      printf("|   ");      out_str_center(list_root->next->name, 33);printf("\n");
+    out_str_center(list_root->previous->genres, 33);printf("   |");out_str_center(list_root->genres, 37);      printf("|   ");      out_str_center(list_root->next->genres, 33);printf("\n");
+    printf("|           Ðåéòèíã %.1f           |   ", list_root->previous->rating); printf("||             Ðåéòèíã %.1f             ||   ", list_root->rating);    printf("|           Ðåéòèíã %.1f           | \n", list_root->next->rating);
+    printf("|                                 |   ");                               printf("||                                     ||   ");                        printf("|                                 | \n");
+    printf("|                                 |   ");                               printf("||                                     ||   ");                        printf("|                                 | \n");
+    printf("|                                 |   ");                               printf("||                                     ||   ");                        printf("|                                 | \n");
+    printf("?––––––––––––––––––––––––––-------?   ");                               printf("||                                     ||   ");                        printf("?––––––––––––––––––––––---------––? \n");
+    printf("                                      ");                               printf("||                                     ||\n");
+    printf("                                      ");                                printf("%c=====================================?\n");
 }
 
-//Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ð´Ð²ÑƒÑÐ²ÑÐ·Ð½Ð¾Ð³Ð¾ ÐºÑ€ÑƒÐ³Ð¾Ð²Ð¾Ð³Ð¾ ÑÐ¿Ð¸ÑÐºÐ° Ñ„Ð¸Ð»ÑŒÐ¼Ð¾Ð²(ÐºÐ°Ñ‚Ð°Ð»Ð¾Ð³)
-void create_list_films(FILE *films_storage, struct film *list_root) {
-    struct film* film_read;      //Ð¢ÐµÐºÑƒÑ‰Ð¸Ð¹ Ñ„Ð¸Ð»ÑŒÐ¼(Ð¿Ñ€Ð¾Ñ…Ð¾Ð´Ð¸Ñ‚ÑÑ Ð¿Ð¾ ÐºÐ°Ð¶Ð´Ð¾Ð¼Ñƒ Ñ„Ð¸Ð»ÑŒÐ¼Ñƒ Ð¸Ð· ÑÐ¿Ð¸ÑÐºÐ°)
+void out_str_center(char string[], int leight_str){
+    int i = 0;
+    while(string[i] != 0){                 //Ñ÷èòûâàíèå êîëè÷åñòâà ñèìâîëîâ
+        i++;
+    }
 
-    //ÐŸÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ðµ Ñ…Ñ€Ð°Ð½ÑÑ‰Ð¸Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ñ„Ð¸Ð»ÑŒÐ¼Ð¾Ð²
-    char null[3];                //ÐŸÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ð°Ñ Ð´Ð»Ñ Ð¿ÐµÑ€ÐµÑ…Ð¾Ð´Ð° Ð½Ð° Ð½Ð¾Ð²ÑƒÑŽ ÑÑ‚Ñ€Ð¾ÐºÑƒ
+    int space = (leight_str-i)/2;
+    int space_left = space;
+    int space_right = space;
+
+    printf("|");
+    while(space_left!=0){
+        printf(" ");
+        space_left--;
+    }
+
+    printf("%s", string);   //Ñåðåäèíà
+
+    while(space_right!=0){    //Ïðàâàÿ ÷àñòü
+        printf(" ");
+        space_right--;
+    }
+
+
+    if((leight_str-i)%2 != 0 ){          //Ïðîâåðêà íà èäåàëüíóþ ñåðåäèí÷àòîñòü
+        printf(" |");
+    }
+    else{
+        printf("|");
+    }
+
+};
+
+//Ñîçäàíèå äâóñâÿçíîãî êðóãîâîãî ñïèñêà ôèëüìîâ(êàòàëîã)
+void create_list_films(FILE *films_storage, struct film *list_root) {
+    struct film* film_read;      //Òåêóùèé ôèëüì(ïðîõîäèòñÿ ïî êàæäîìó ôèëüìó èç ñïèñêà)
+
+    //Ïåðåìåííûå õðàíÿùèå ïàðàìåòðû ôèëüìîâ
+    char null[3];                //Ïåðåìåííàÿ äëÿ ïåðåõîäà íà íîâóþ ñòðîêó
     char name_film[50];
     int year_issue;
     char country[50];
     char genres[50];
     float rating;
 
-    //Ð“ÐµÐ½Ð¸Ð°Ð»ÑŒÐ½Ð°Ñ Ð²ÐµÑ‰ÑŒ
-    //ÐžÐ´Ð½Ð¾Ð²Ñ€ÐµÐ¼ÐµÐ½Ð½Ð¾ Ð¸ ÑÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÑŽ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ Ñ„Ð¸Ð»ÑŒÐ¼Ð° Ð¸ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÑŽ, Ð° ÐµÑÑ‚ÑŒ Ð»Ð¸ Ð¾Ð½Ð¾ Ð²Ð¾Ð¾Ð±Ñ‰Ðµ, ÐºÐ¾Ð³Ð´Ð° Ð½ÐµÑ‚, Ð²Ñ‹Ñ…Ð¾Ð¶Ñƒ Ð¸Ð· Ñ†Ð¸ÐºÐ»Ð°
+    //Ãåíèàëüíàÿ âåùü
+    //Îäíîâðåìåííî è ñ÷èòûâàþ íàçâàíèå ôèëüìà è ïðîâåðÿþ, à åñòü ëè îíî âîîáùå, êîãäà íåò, âûõîæó èç öèêëà
     while(fgets(name_film, 50, films_storage) != NULL){
-        //Ð¡Ñ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÑŽ Ð²ÑÐµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ñ„Ð¸Ð»ÑŒÐ¼Ð¾Ð²
+        int i = 0;
+        while(name_film[i] != '\n'){                 //Óäàëåíèå íåíóæíîãî ñèìâîëà
+            i++;
+        }
+        name_film[i]=0;
+        //Ñ÷èòûâàþ âñå ïàðàìåòðû ôèëüìîâ
         fscanf(films_storage, "%d", &year_issue);
-        fgets(null, 3, films_storage);           //ÐŸÐµÑ€ÐµÑ…Ð¾Ð´ Ð½Ð° Ð½Ð¾Ð²ÑƒÑŽ ÑÑ‚Ñ€Ð¾ÐºÑƒ, Ñ‚Ðº Ð¿Ð¾ÑÐ»Ðµ fscanf Ð½Ðµ Ð¿ÐµÑ€ÐµÐ½Ð¾ÑÐ¸Ñ‚ÑÑ(ÐºÐ¾ÑÑ‚Ñ‹Ð»ÑŒ)
+        fgets(null, 3, films_storage);           //Ïåðåõîä íà íîâóþ ñòðîêó, òê ïîñëå fscanf íå ïåðåíîñèòñÿ(êîñòûëü)
+
 
         fgets(country, 50, films_storage);
-        fgets(genres, 50, films_storage);
+        i =0;
+        while(country[i] != '\n'){                      //Óäàëåíèå íåíóæíîãî ñèìâîëà
+            i++;
+        }
+        country[i]=0;
 
+        fgets(genres, 50, films_storage);
+        i =0;
+        while(genres[i] != '\n'){       //Óäàëåíèå íåíóæíîãî ñèìâîëà
+            i++;
+        }
+        genres[i]=0;
+
+
+        fgets(null, 3, films_storage);
 
         fscanf(films_storage, "%f", &rating);
         fgets(null, 3, films_storage);
 
-
-        film_read = create_film(name_film, year_issue, country, genres, rating);   //Ð¡Ð¾Ð·Ð´Ð°ÑŽ Ñ„Ð¸Ð»ÑŒÐ¼
-        adding_end(list_root, film_read);                              //Ð”Ð¾Ð±Ð°Ð²Ð»ÑÑŽ Ð² ÑÐ¿Ð¸ÑÐ¾Ðº
+        film_read = create_film(name_film, year_issue, country, genres, rating);   //Ñîçäàþ ôèëüì
+        adding_end(list_root, film_read);                              //Äîáàâëÿþ â ñïèñîê
     }
-    deletion_start(list_root);                                                     //Ð£Ð´Ð°Ð»ÑÑŽ Ð½Ð°Ñ‡Ð°Ð»ÑŒÐ½Ñ‹Ð¹ Ð½ÑƒÐ»ÐµÐ²Ð¾Ð¹ root
+    deletion_start(list_root);                                                     //Óäàëÿþ íà÷àëüíûé íóëåâîé root
 
-    list_root->previous = film_read;                                               //Ð£ Ð¿ÐµÑ€Ð²Ð¾Ð³Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð° ÑÐ¾Ð·Ð´Ð°ÑŽ Ð¿Ñ€ÐµÐ´Ñ‹Ð´ÑƒÑ‰Ð¸Ð¹(Ð¿Ð¾ÑÐ»ÐµÐ´Ð½Ð¸Ð¹)
-    film_read->next=list_root;                                                     //Ð Ñƒ Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÐµÐ³Ð¾ Ð¿Ð¾ÑÐ»ÐµÐ´ÑƒÑŽÑ‰Ð¸Ð¹(Ð¿ÐµÑ€Ð²Ñ‹Ð¹)
+    list_root->previous = film_read;                                               //Ó ïåðâîãî ýëåìåíòà ñîçäàþ ïðåäûäóùèé(ïîñëåäíèé)
+    film_read->next=list_root;                                                     //À ó ïîñëåäíåãî ïîñëåäóþùèé(ïåðâûé)
 }
 
-//Ð”Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð° Ð² ÐºÐ¾Ð½ÐµÑ†
+//Äîáàâëåíèå ýëåìåíòà â êîíåö
 void adding_end(struct  film* list_root, struct  film* added_element){
     struct film* current = list_root;
     while(current->next != NULL){
         current = current -> next;
     }
-    current->next = added_element;      //Ð”Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ðº Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÐµÐ¼Ñƒ
-    added_element->previous = current;  //Ð¡Ð¾Ñ…Ñ€Ð°Ð½ÑÑŽ Ñƒ Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÐµÐ³Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð° Ð¿Ñ€ÐµÐ´Ñ‹Ð´ÑƒÑ‰Ð¸Ð¹
+    current->next = added_element;      //Äîáàâëåíèå ê ïîñëåäíåìó
+    added_element->previous = current;  //Ñîõðàíÿþ ó ïîñëåäíåãî ýëåìåíòà ïðåäûäóùèé
 }
 
-//Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ðµ Ð¿ÐµÑ€Ð²Ð¾Ð³Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð°
+//Óäàëåíèå ïåðâîãî ýëåìåíòà
 void deletion_start(struct film* list_root){
-    //ÐŸÐµÑ€ÐµÐ´Ð°Ð» Ð²ÑÐµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ Ð²Ñ‚Ð¾Ñ€Ð¾Ð³Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð° Ð² Ð¿ÐµÑ€Ð²Ñ‹Ð¹
+    //Ïåðåäàë âñå çíà÷åíèÿ âòîðîãî ýëåìåíòà â ïåðâûé
     list_root->year_issue = list_root->next->year_issue;
     list_root->rating = list_root->next->rating;
     for(int i = 0; i <50; i++){
-        list_root->name[i] = list_root->next->name[i];       //Ð¢.Ðº char, Ñ‚Ð¾ Ð·Ð°Ð¼ÐµÐ½ÑÑŽ ÐºÐ°Ð¶Ð´Ñ‹Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚
+        list_root->name[i] = list_root->next->name[i];       //Ò.ê char, òî çàìåíÿþ êàæäûé ýëåìåíò
         list_root->genres[i]= list_root->next->genres[i];
         list_root->country[i] = list_root->next->country[i];
     }
 
-    //Ð£Ð´Ð°Ð»ÑÑŽ Ð²Ñ‚Ð¾Ñ€Ð¾Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚, Ñ‚Ð°Ðº ÐºÐ°Ðº Ð²ÑÐµ ÐµÐ³Ð¾ Ð´Ð°Ð½Ð½Ñ‹Ðµ ÑÐ¾Ñ…Ñ€Ð°Ð½ÐµÐ½Ñ‹ Ð² list root
+
+    //Óäàëÿþ âòîðîé ýëåìåíò, òàê êàê âñå åãî äàííûå ñîõðàíåíû â list root
     free(list_root->next);
 
-    //Ð¢ÐµÐ¿ÐµÑ€ÑŒ Ð²Ñ‚Ð¾Ñ€Ð¾Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ Ð·Ð°Ð¼ÐµÑ‰Ð°ÐµÑ‚ Ð¿ÐµÑ€Ð²Ñ‹Ð¹
-    //Ð•Ð³Ð¾ Ð¿Ð¾ÑÐ»ÐµÐ´ÑƒÑŽÑ‰Ð¸Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ Ñ€Ð°Ð²ÐµÐ½ 3 ÑÑ‚Ð°Ñ€Ð¾Ð³Ð¾ Ð»Ð¸ÑÑ‚ Ñ€ÑƒÑ‚Ð°
+    //Òåïåðü âòîðîé ýëåìåíò çàìåùàåò ïåðâûé
+    //Åãî ïîñëåäóþùèé ýëåìåíò ðàâåí 3 ñòàðîãî ëèñò ðóòà
     list_root->next = list_root->next->next;
+    list_root->next->previous = list_root->next;
 }
 
 

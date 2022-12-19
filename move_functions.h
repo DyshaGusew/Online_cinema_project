@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <locale.h>
 
-//Структура фильма
+//Структура элемента фильма
 struct film{
     char name[50];
     int year_issue;
@@ -17,6 +17,8 @@ struct film{
 struct film* create_film(char name_film[50], int year_issue, char country[50], char genres[50], float rating);
 
 void out_list_films(struct film* list_root);
+
+void out_str_center(char string[], int leight_str);
 
 void create_list_films(FILE *films_storage, struct film* list_root);
 
