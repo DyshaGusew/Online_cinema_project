@@ -27,5 +27,4 @@ void adding_end(struct  film* list_root, struct  film* added_element);
 void  deletion_start(struct film* list_root);
 
 
-
 #endif
