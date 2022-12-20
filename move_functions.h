@@ -28,9 +28,4 @@ void  deletion_start(struct film* list_root);
 
 
 
-
-
-
-
-
 #endif

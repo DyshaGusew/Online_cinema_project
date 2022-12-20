@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <locale.h>
 #include <conio.h>
-#include <Windows.h>
+#include <stdlib.h>
 #include "move_functions.h"
 
 
@@ -23,12 +23,14 @@ int main() {
     while(1){
         char sim = getch();
         if(sim == 'd'){
-            //struct film* current = root_film_catalog;
+            //system( "cls" );
+          // system("clear");
+
+
             out_list_films(root_film_catalog->next);
             root_film_catalog = root_film_catalog->next;
         }
         if(sim == 'a'){
-            //struct film* current = root_film_catalog;
             out_list_films(root_film_catalog->previous);
             root_film_catalog = root_film_catalog->previous;
         }

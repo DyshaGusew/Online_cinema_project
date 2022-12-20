@@ -25,24 +25,26 @@ struct film* create_film(char name_film[50], int year_issue, char country[50], c
 void out_list_films(struct film* list_root){
     setlocale(LC_ALL, "Russian");
     struct film* current = list_root;   //Ïåðåìåííàÿ, õðàíÿùàÿ àäðåñ òåêóùåãî ýëåìåíòà(äëÿ íà÷àëà - ïåðâîãî) îíà ïåðåìåùàåòñÿ ïî âñåì ýëåìåíòàì
-    char n = (char)191;
+    char n = '\\/';
 
     //27 ñèìâîëîâ íå ñ÷èòàÿ ïîëåé
-    printf("                                      ");                              printf("%c=====================================?\n");
-    printf("                                      ");                              printf("||                                     ||\n");
-    printf("%c––––––––––––––--------–––––––––––?   ", n);                           printf("||                                     ||   ");                        printf("%c–––––--------––––––––––––––––––––?\n", n);
-    printf("|                                 |   ");                               printf("||                                     ||   ");                        printf("|                                 |\n");
-    printf("|                                 |   ");                               printf("||                                     ||   ");                        printf("|                                 |\n");
-    printf("|                                 |   ");                               printf("||                                     ||   ");                        printf("|                                 |\n");
-    out_str_center(list_root->previous->name, 33);printf("   |");out_str_center(list_root->name, 37);      printf("|   ");      out_str_center(list_root->next->name, 33);printf("\n");
-    out_str_center(list_root->previous->genres, 33);printf("   |");out_str_center(list_root->genres, 37);      printf("|   ");      out_str_center(list_root->next->genres, 33);printf("\n");
-    printf("|           Ðåéòèíã %.1f           |   ", list_root->previous->rating); printf("||             Ðåéòèíã %.1f             ||   ", list_root->rating);    printf("|           Ðåéòèíã %.1f           | \n", list_root->next->rating);
-    printf("|                                 |   ");                               printf("||                                     ||   ");                        printf("|                                 | \n");
-    printf("|                                 |   ");                               printf("||                                     ||   ");                        printf("|                                 | \n");
-    printf("|                                 |   ");                               printf("||                                     ||   ");                        printf("|                                 | \n");
-    printf("?––––––––––––––––––––––––––-------?   ");                               printf("||                                     ||   ");                        printf("?––––––––––––––––––––––---------––? \n");
-    printf("                                      ");                               printf("||                                     ||\n");
-    printf("                                      ");                                printf("%c=====================================?\n");
+    printf("                                        ");                              printf("//===================================\\");printf("\\ \n");
+    printf("                                        ");                              printf("||                                   ||\n");
+    printf("/––––––––––––––--------–––––--–-––––\\   ");                              printf("||                                   ||   ");                        printf("/–––––----------––––––––––––––––––––\\\n");
+    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+    out_str_center(list_root->previous->name, 35);printf("   |");out_str_center(list_root->name, 35);      printf("|   ");      out_str_center(list_root->next->name, 35);printf("\n");
+    out_str_center(list_root->previous->genres, 35);printf("   |");out_str_center(list_root->genres, 35);      printf("|   ");      out_str_center(list_root->next->genres, 35);printf("\n");
+    printf("|            Ðåéòèíã %.1f            |   ", list_root->previous->rating); printf("||            Ðåéòèíã %.1f            ||   ", list_root->rating);    printf("|            Ðåéòèíã %.1f            |\n", list_root->next->rating);
+    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+    printf("\\––––––––––––––––––––––––––---------/   ");                              printf("||                                   ||   ");                        printf("\\––––––––––––––––––––––-----------––/\n");
+    printf("                                        ");                               printf("||                                   ||\n");
+    printf("                                        ");     printf("\\");      printf("\\===================================//\n");
 }
 
 void out_str_center(char string[], int leight_str){
@@ -160,7 +162,7 @@ void deletion_start(struct film* list_root){
     //Òåïåðü âòîðîé ýëåìåíò çàìåùàåò ïåðâûé
     //Åãî ïîñëåäóþùèé ýëåìåíò ðàâåí 3 ñòàðîãî ëèñò ðóòà
     list_root->next = list_root->next->next;
-    list_root->next->previous = list_root->next;
+    list_root->next->previous = list_root;
 }
 
 
