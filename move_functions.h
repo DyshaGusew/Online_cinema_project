@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <locale.h>
 
-//РЎС‚СЂСѓРєС‚СѓСЂР° СЌР»РµРјРµРЅС‚Р° С„РёР»СЊРјР°
+//Структура элемента фильма
 struct film{
     char name[50];
     int year_issue;

@@ -7,19 +7,20 @@
 
 int main() {
 
-    //Р›РѕРєР°Р»РёР·Р°С†РёСЏ
+    //Локализация
     setlocale(LC_ALL, "Russian");
-    //РЎС‡РёС‚С‹РІР°РЅРёРµ РІСЃРµС… С„РёР»СЊРјРѕРІ РєРёРЅРѕС‚РµР°С‚СЂР°
+    //Считывание всех фильмов кинотеатра
     FILE *films_storage = fopen("films.txt", "r");
 
-    //РЎРѕР·РґР°РЅРёРµ РєР°С‚Р°Р»РѕРіР° РёР· РІСЃРµС… С„РёР»СЊРјРѕРІ
+    //Создание каталога из всех фильмов
     struct film* root_film_catalog;
     root_film_catalog = create_film("Null", 0, "NULL", "NULL", 0.0f);
     create_list_films(films_storage, root_film_catalog);
 
+    //Вывожу фильм первый раз
     out_list_films(root_film_catalog);
 
-    //РџРѕС‚РѕРј РЅРµРѕР±С…РѕРґРёРјРѕ РґРѕР±Р°РІСЃРёС‚СЊ СѓСЃР»РѕРІРёРµ РІС‹С…РѕРґР°
+    //Потом необходимо добавить условие выхода
     while(1){
         char sim = getch();
         if(sim == 'd'){
