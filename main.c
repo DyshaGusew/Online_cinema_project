@@ -23,14 +23,12 @@ int main() {
     while(1){
         char sim = getch();
         if(sim == 'd'){
-            //system( "cls" );
-          // system("clear");
-
-
+            system( "cls" );
             out_list_films(root_film_catalog->next);
             root_film_catalog = root_film_catalog->next;
         }
         if(sim == 'a'){
+            system( "cls" );
             out_list_films(root_film_catalog->previous);
             root_film_catalog = root_film_catalog->previous;
         }

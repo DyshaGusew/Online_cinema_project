@@ -25,7 +25,6 @@ struct film* create_film(char name_film[50], int year_issue, char country[50], c
 void out_list_films(struct film* list_root){
     setlocale(LC_ALL, "Russian");
     struct film* current = list_root;   //Переменная, хранящая адрес текущего элемента(для начала - первого) она перемещается по всем элементам
-    char n = '\\/';
 
     //27 символов не считая полей
     printf("                                        ");                              printf("//===================================\\");printf("\\ \n");
@@ -35,9 +34,11 @@ void out_list_films(struct film* list_root){
     printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
     printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
     printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
     out_str_center(list_root->previous->name, 35);printf("   |");out_str_center(list_root->name, 35);      printf("|   ");      out_str_center(list_root->next->name, 35);printf("\n");
     out_str_center(list_root->previous->genres, 35);printf("   |");out_str_center(list_root->genres, 35);      printf("|   ");      out_str_center(list_root->next->genres, 35);printf("\n");
     printf("|            Рейтинг %.1f            |   ", list_root->previous->rating); printf("||            Рейтинг %.1f            ||   ", list_root->rating);    printf("|            Рейтинг %.1f            |\n", list_root->next->rating);
+    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
     printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
     printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
     printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
@@ -156,13 +157,10 @@ void deletion_start(struct film* list_root){
     }
 
 
-    //Удаляю второй элемент, так как все его данные сохранены в list root
-    free(list_root->next);
-
     //Теперь второй элемент замещает первый
     //Его последующий элемент равен 3 старого лист рута
     list_root->next = list_root->next->next;
-    list_root->next->previous = list_root;
+    list_root->next->previous = list_root->previous;
 }
 
 
