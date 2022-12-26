@@ -1,99 +1,160 @@
 #include <stdio.h>
-#include <locale.h>
-#include <conio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include "move_functions.h"
+#include <limits.h>
 
+typedef struct user{
+    char login[20];
+    char password[20];
+    int card_number[15];
+    int siseOfFavorites;
+    int admin;
+} user;
 
-int main() {
-    //Локализация
-    setlocale(LC_ALL, "Russian");
+void registration(){
+    char d[] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"};
+    int tmp = 0;
+    user user;
+    FILE *file = fopen("file.txt", "w");
+    printf("Р’РІРµРґРёС‚Рµ Р»РѕРіРёРЅ(РѕС‚ 3 РґРѕ 20 СЃРёРјРІРѕР»РѕРІ Р»Р°С‚РёРЅСЃРєРѕРіРѕ Р°Р»С„Р°РІРёС‚Р°): ");
+    scanf("%s", &user.login);
+    /*for(int i = 0; i <= 20; i++)
+      {
+          scanf("%c", &user.login);
+      }
+      for(int i = 0; i <= 20; i++)
+      {
+          for(int j = 0; j < 52; j++)
+          {
+              if(user.login[i] != d[j])
+              {
+                  tmp++;
+              }
+          }
+      }
+    if (tmp != 0){
+      printf("Р’С‹ РІРІРµР»Рё РЅРµРїСЂР°РІРёР»СЊРЅС‹Рµ СЃРёРјРІРѕР»С‹\n");
+    }
+    else {
+      continue;
+    }*/
+    fprintf(file, "%s", user.login);
+    printf("Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ(РѕС‚ 6 РґРѕ 20 СЃРёРјРІРѕР»РѕРІ): ");
+    scanf("%s", &user.password);
+    fprintf(file, "%s", user.password);
+    /*printf("Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РєР°СЂС‚С‹(16 СЃРёРјРІРѕР»РѕРІ): ");
+    scanf("%d", &user.card_number);
+    moon(card_number);
+    fprintf(file, "%d", user.card_number);*/
+    fclose(file);
+}
 
-    //Создание каталога из всех фильмов
-    FILE *films_storage = fopen("films.txt", "r");
-    struct film* root_film_catalog;     //Начальный элемент каталога
-    root_film_catalog = create_film("Null", 0, "NULL", "NULL", 0.0f);
-    create_list_films(films_storage, root_film_catalog);
+//Check typy of creditcard and if it's even valid
+int moon()
+{
+    long long int cc = 0; // cc number; could be 13, 15, 16 numbers
+    int first_multiply = 0;
+    int second_summ = 0;
+    int final_summ = 0;
 
-    //Вывожу три карточки первый раз
-    system( "cls" );                 //Очистка консоли
-    out_list_films(root_film_catalog);
+    printf("Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РєР°СЂС‚С‹:\n");
 
+    do
+    {
+        if (!scanf("%lld", &cc) ||   // scanf returns 1 if valid
+            (cc < (long long)100000000000 && !(cc > LLONG_MAX))) // min/max CC number
+            printf("INVALID\n");
+        while (getchar() != '\n') ; // clear buffer
+    }
+    while (cc < (long long)100000000000 && !(cc > LLONG_MAX));  // min/max CC number
 
-    //Главный цикл взаимодействия с карточками и меню
-    int flag_line_card = 1;       //Флаги, отслеживающие в каком мы сейчас блоке
-    int flag_menu = 0;
-    while(1){
-        //Считывание введенного символа
-        char sim = getch();
+    // now get separate numbers (2nd starting from end)
+    // make array which contain 9 elements (we will use only 8)
+    int n[9]; for (int i = 0; i < 10; i++) n[i] = 0; // fill array with 0;
 
-        //Перемещение вправо(все взаимодействия могут проходить только если мы не в меню)
-        if(sim == 'd' & flag_menu == 0){          //Очищаем консоль и выводим все, когда в середине правый элемент, перемещаем root
-            system( "cls" );
-            flag_line_card = 1;
-            out_list_films(root_film_catalog->next);
-            root_film_catalog = root_film_catalog->next;
+    n[1] = (cc % 100)               / 10;
+    n[2] = (cc % 10000)             / 1000;
+    n[3] = (cc % 1000000)           / 100000;
+    n[4] = (cc % 100000000)         / 10000000;
+    n[5] = (cc % 10000000000)       / 1000000000;
+    n[6] = (cc % 1000000000000)     / 100000000000;
+    n[7] = (cc % 100000000000000)   / 10000000000000;
+    n[8] = (cc % 10000000000000000) / 1000000000000000;
 
-        }
+    // multiplied x2 (`d` - doubled)
+    int d[9]; for (int i = 0; i < 10; i++) d[i] = 0; // fill array with 0;
 
-        //Перемещение влево
-        if(sim == 'a' & flag_menu == 0){    //Очищаем консоль и выводим все, когда в середине левый элемент, перемещаем root
-            system( "cls" );
-            flag_line_card = 1;
-            out_list_films(root_film_catalog->previous);
-            root_film_catalog = root_film_catalog->previous;
-        }
+    d[1] = (n[1]*2);
+    d[2] = (n[2]*2);
+    d[3] = (n[3]*2);
+    d[4] = (n[4]*2);
+    d[5] = (n[5]*2);
+    d[6] = (n[6]*2);
+    d[7] = (n[7]*2);
+    d[8] = (n[8]*2);
 
-        //Вывод подробной информации
-        if(sim == 's' & flag_line_card == 1 & flag_menu == 0){ //Проверка на текущее наличие подробной информации(если она уже показывается, то 2 раз не надо) + проверка, что мы не в меню
-            flag_line_card = 0;     //Уже не в линии
-            out_detailed_films(root_film_catalog);
-        }
+    // Extract number from 0 to 9 from doubled numbers with module (`m`).
+    // Sometimes we will have 1 digit, sometimes 2 (then one will be 1).
+    int m[9]; for (int i = 0; i < 10; i++) m[i] = 0; // fill array with 0;
 
-
-
-        //Если пользователь не в меню (т.е. в подробной информации или просто в линии карточек), он может добавить фильм в избранное
-        if(sim == 'e' & flag_menu == 0){
-            return_film_favorites(root_film_catalog);        //Пустая функция, принимает значение возвращаемого фильма
-            printf("                                               Фильм добавлен в избранное");
-            sleep(2);
-            system( "cls" );
-
-            if(flag_line_card == 1){           //В зависимости от того в каком блоке, выводится только линия или подробная информация
-                out_list_films(root_film_catalog);
-            }
-            else{
-                out_list_films(root_film_catalog);
-                out_detailed_films(root_film_catalog);
-            }
-        }
-
-
-
-        //Закрытие подробной информации(пользователь находится на просмотре подробной информации)
-        if(sim == 'w' & flag_line_card == 0 & flag_menu == 0){
-            flag_line_card = 1;
-            system( "cls" );
-            out_list_films(root_film_catalog);
-        }
-
-        //Открытие меню(пользователь находится на линии карточек)
-        else if(sim == 'w' & flag_line_card == 1){
-            flag_line_card = 0;
-            flag_menu = 1;
-            system( "cls" );
-            out_menu();
-        }
-
-        //Условие выхода, желательно реализовать через меню
-        if(sim == 'q'){
-            break;
-        }
+    for (int i = 1; i < 9; i++) // must lurk only at 8 (legit array)
+    {
+        if (d[i] > 10)
+            m[i] = (d[i] % 10) + 1; // as we need summ, we can add 1 right on
+        else if (d[i] == 10)
+            m[i] = 1;
+        else
+            m[i] = d[i];
     }
 
+    // first half done:
+    first_multiply = m[1]+m[2]+m[3]+m[4]+m[5]+m[6]+m[7]+m[8];
 
+    // now take leftover digits from initial CC number
+    int x[9]; for (int i = 0; i < 10; i++) x[i] = 0; // fill array with 0;
 
-    fclose(films_storage);
+    x[1] = (cc % 10);
+    x[2] = (cc % 1000)             / 100;
+    x[3] = (cc % 100000)           / 10000;
+    x[4] = (cc % 10000000)         / 1000000;
+    x[5] = (cc % 1000000000)       / 100000000;
+    x[6] = (cc % 100000000000)     / 10000000000;
+    x[7] = (cc % 10000000000000)   / 1000000000000;
+    x[8] = (cc % 1000000000000000) / 100000000000000;
+
+    // done! now calculate:
+    second_summ    = x[1]+x[2]+x[3]+x[4]+x[5]+x[6]+x[7]+x[8];
+    final_summ     = first_multiply + second_summ;
+
+    if (final_summ % 10 == 0)
+    {
+        if (cc < (long long)10000000000000)    // 13 digits
+        {
+            printf("VISA\n");
+        }
+
+        else if (cc < (long long)1000000000000000)  // 15 digits
+        {
+            printf("AMEX\n");
+        }
+
+        else if (cc < (long long)10000000000000000) // 16 digits
+        {
+            if (n[8] == 4) // visa cc always starts with 4
+                printf("VISA\n");
+            else
+                printf("MCARD\n");
+        }
+    }
+    else
+        printf("Credit card INVALID\n");
+
+    getchar();
+    getchar();
+
+}
+
+int main(){
+    registration();
+    moon();
     return 0;
 }
