@@ -1,84 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <string.h>
 
-typedef struct user{
-    char login[20];
-    char password[20];
-    int card_number[15];
-    int siseOfFavorites;
-    int admin;
-} user;
-
-void registration(){
-    char d[] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"};
-    int tmp = 0;
-    user user;
-    FILE *file = fopen("file.txt", "w");
-    printf("Введите логин(от 3 до 20 символов латинского алфавита): ");
-    scanf("%s", &user.login);
-    /*for(int i = 0; i <= 20; i++)
-      {
-          scanf("%c", &user.login);
-      }
-      for(int i = 0; i <= 20; i++)
-      {
-          for(int j = 0; j < 52; j++)
-          {
-              if(user.login[i] != d[j])
-              {
-                  tmp++;
-              }
-          }
-      }
-    if (tmp != 0){
-      printf("Вы ввели неправильные символы\n");
-    }
-    else {
-      continue;
-    }*/
-    fprintf(file, "%s", user.login);
-    printf("Введите пароль(от 6 до 20 символов): ");
-    scanf("%s", &user.password);
-    fprintf(file, "%s", user.password);
-    /*printf("Введите номер карты(16 символов): ");
-    scanf("%d", &user.card_number);
-    moon(card_number);
-    fprintf(file, "%d", user.card_number);*/
-    fclose(file);
-}
-
-//Check typy of creditcard and if it's even valid
-int moon()
-{
-    long long int cc = 0; // cc number; could be 13, 15, 16 numbers
+int moon() {
+    long long int card_number = 0; // card_number number; could be 13, 15, 16 numbers
     int first_multiply = 0;
     int second_summ = 0;
     int final_summ = 0;
-
+    FILE *users_info = fopen("users_info.txt", "a");
     printf("Введите номер карты:\n");
 
     do
     {
-        if (!scanf("%lld", &cc) ||   // scanf returns 1 if valid
-            (cc < (long long)100000000000 && !(cc > LLONG_MAX))) // min/max CC number
+        if (!scanf("%lld", &card_number) ||   // scanf returns 1 if valid
+            (card_number < (long long)100000000000 && !(card_number > LLONG_MAX))) // min/max CC number
             printf("INVALID\n");
         while (getchar() != '\n') ; // clear buffer
     }
-    while (cc < (long long)100000000000 && !(cc > LLONG_MAX));  // min/max CC number
+    while (card_number < (long long)100000000000 && !(card_number > LLONG_MAX));  // min/max CC number
 
     // now get separate numbers (2nd starting from end)
     // make array which contain 9 elements (we will use only 8)
     int n[9]; for (int i = 0; i < 10; i++) n[i] = 0; // fill array with 0;
 
-    n[1] = (cc % 100)               / 10;
-    n[2] = (cc % 10000)             / 1000;
-    n[3] = (cc % 1000000)           / 100000;
-    n[4] = (cc % 100000000)         / 10000000;
-    n[5] = (cc % 10000000000)       / 1000000000;
-    n[6] = (cc % 1000000000000)     / 100000000000;
-    n[7] = (cc % 100000000000000)   / 10000000000000;
-    n[8] = (cc % 10000000000000000) / 1000000000000000;
+    n[1] = (card_number % 100)               / 10;
+    n[2] = (card_number % 10000)             / 1000;
+    n[3] = (card_number % 1000000)           / 100000;
+    n[4] = (card_number % 100000000)         / 10000000;
+    n[5] = (card_number % 10000000000)       / 1000000000;
+    n[6] = (card_number % 1000000000000)     / 100000000000;
+    n[7] = (card_number % 100000000000000)   / 10000000000000;
+    n[8] = (card_number % 10000000000000000) / 1000000000000000;
 
     // multiplied x2 (`d` - doubled)
     int d[9]; for (int i = 0; i < 10; i++) d[i] = 0; // fill array with 0;
@@ -112,14 +65,14 @@ int moon()
     // now take leftover digits from initial CC number
     int x[9]; for (int i = 0; i < 10; i++) x[i] = 0; // fill array with 0;
 
-    x[1] = (cc % 10);
-    x[2] = (cc % 1000)             / 100;
-    x[3] = (cc % 100000)           / 10000;
-    x[4] = (cc % 10000000)         / 1000000;
-    x[5] = (cc % 1000000000)       / 100000000;
-    x[6] = (cc % 100000000000)     / 10000000000;
-    x[7] = (cc % 10000000000000)   / 1000000000000;
-    x[8] = (cc % 1000000000000000) / 100000000000000;
+    x[1] = (card_number % 10);
+    x[2] = (card_number % 1000)             / 100;
+    x[3] = (card_number % 100000)           / 10000;
+    x[4] = (card_number % 10000000)         / 1000000;
+    x[5] = (card_number % 1000000000)       / 100000000;
+    x[6] = (card_number % 100000000000)     / 10000000000;
+    x[7] = (card_number % 10000000000000)   / 1000000000000;
+    x[8] = (card_number % 1000000000000000) / 100000000000000;
 
     // done! now calculate:
     second_summ    = x[1]+x[2]+x[3]+x[4]+x[5]+x[6]+x[7]+x[8];
@@ -127,22 +80,29 @@ int moon()
 
     if (final_summ % 10 == 0)
     {
-        if (cc < (long long)10000000000000)    // 13 digits
+        if (card_number < (long long)10000000000000)    // 13 digits
         {
             printf("VISA\n");
+            fprintf(users_info, "%lld\n\n", card_number);
         }
 
-        else if (cc < (long long)1000000000000000)  // 15 digits
+        else if (card_number < (long long)1000000000000000)  // 15 digits
         {
             printf("AMEX\n");
+            fprintf(users_info, "%lld\n\n", card_number);
         }
 
-        else if (cc < (long long)10000000000000000) // 16 digits
+        else if (card_number < (long long)10000000000000000) // 16 digits
         {
-            if (n[8] == 4) // visa cc always starts with 4
+            if (n[8] == 4){ // visa card_number always starts with 4
                 printf("VISA\n");
+                fprintf(users_info, "%lld\n\n", card_number);
+            }
             else
+            {
                 printf("MCARD\n");
+                fprintf(users_info, "%lld\n\n", card_number);
+            }
         }
     }
     else
@@ -150,11 +110,92 @@ int moon()
 
     getchar();
     getchar();
+    fclose(users_info);
+    return card_number;
+}
 
+typedef struct user{
+    char login[20];
+    char password[20];
+    char card_number[16];
+    int siseOfFavorites;
+    int admin;
+} user;
+
+void registration(){
+    char d[] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"};
+    char p[] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"};
+    char n[] = {1,2,3,4,5,6,7,8,9,0};
+    int tmp = 0;
+    user user;
+    FILE *users_info = fopen("users_info.txt", "a");
+    while (tmp == 0) {
+        printf("Введите логин(от 3 до 20 символов латинского алфавита): ");
+        scanf("%s", user.login);
+        for(int i = 0; i < strlen(user.login); i++)
+        {
+            tmp = 0;
+            for(int j = 0; j < 52; j++)
+            {
+                if(user.login[i] == d[j])
+                {
+                    tmp++;
+                }
+            }
+            if (tmp == 0) {
+                printf("Вы ввели неправильные символы\n");
+                break;
+            }
+        }
+    }
+    fprintf(users_info, "%s\n", user.login);
+    tmp = 0;
+    while (tmp == 0) {
+        printf("Введите пароль(от 6 до 20 символов): ");
+        scanf("%s", user.password);
+        for(int i = 0; i < strlen(user.password); i++)
+        {
+            tmp = 0;
+            for(int j = 0; j < 62; j++)
+            {
+                if(user.password[i] == p[j])
+                {
+                    tmp++;
+                }
+            }
+            if (tmp == 0) {
+                printf("Вы ввели неправильные символы\n");
+                break;
+            }
+        }
+    }
+    fprintf(users_info, "%s\n", user.password);
+    tmp = 0;
+    while (tmp == 0) {
+        printf("Введите номер карты (16 символов): ");
+        scanf("%s", user.card_number);
+        for(int i = 0; i < 15; i++)
+        {
+            tmp = 0;
+            for(int j = 0; j < 9; j++)
+            {
+                if(user.card_number[i] == n[j])
+                {
+                    tmp++;
+                }
+            }
+            if (tmp == 0 || strlen(user.card_number) != 16) {
+                printf("Вы ввели неправильные символы или неправильное их количество\n");
+                break;
+            }
+        }
+    }
+    fprintf(users_info, "%s\n\n", user.card_number);
+    fclose(users_info);
 }
 
 int main(){
     registration();
-    moon();
+    // moon();
     return 0;
 }
