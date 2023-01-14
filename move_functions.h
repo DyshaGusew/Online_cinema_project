@@ -14,10 +14,6 @@ struct film{
     struct film* previous;
 };
 
-struct user{
-    struct film* favorites;
-};
-
 
 struct film* create_film(char name_film[50], int year_issue, char country[50], char genres[50], float rating);
 

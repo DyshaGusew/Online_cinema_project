@@ -140,38 +140,7 @@ void out_list_films(struct film* list_root){
 
 
 }
-//Работа с триплетом
-//void working_list_films(struct film* list_root){
-//    setlocale(LC_ALL, "Russian");
-//
-//    //О боже, сложно понять, но попробуйте
-//    printf("                                                         Меню");
-//    printf("                                                                                                                      %c\n", (char)24);
-//    printf("                                        ");                              printf("//===================================\\");printf("\\ \n");
-//    printf("                                        ");                              printf("||                                   ||\n");
-//    printf("/-----------------------------------\\   ");                              printf("||                                   ||   ");                        printf("/-----------------------------------");printf("\\ ");
-//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
-//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
-//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
-//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
-//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
-//    out_str_center(list_root->previous->name, 35);printf("   |");out_str_center(list_root->name, 35);      printf("|   ");      out_str_center(list_root->next->name, 35);printf("\n");
-//    out_str_center(list_root->previous->genres, 35);printf("   |");out_str_center(list_root->genres, 35);      printf("|   ");      out_str_center(list_root->next->genres, 35);printf("\n");
-//    printf("|            Рейтинг %.1f            |   ", list_root->previous->rating); printf("||            Рейтинг %.1f            ||   ", list_root->rating);    printf("|            Рейтинг %.1f            |\n", list_root->next->rating);
-//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
-//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
-//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
-//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
-//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
-//    printf("\\-----------------------------------/   ");                               printf("||                                   ||   ");                        printf("\\-----------------------------------/\n");
-//    printf("                                        ");                               printf("||                                   ||\n");
-//    printf("                                        ");     printf("\\");      printf("\\===================================//\n");
-//    printf("                                            Добавить фильм в избранное - 'e'\n");
-//    printf("                                                           %c\n", (char)25);
-//    printf("                                                  Подробная информация\n");
-//
-//
-//}
+
 //Вывод подробной информации о фильме
 void out_detailed_films(struct film* list_root){
     printf("                              /---------------------------------------------------------\\\n");
@@ -358,10 +327,14 @@ void out_str_country_center(char string[], int leight_str){
 //Функции Меню
 int out_menu(struct film* list_root) {
     //Возвращаться к списку фильмов мы уже должны через меню можно опять использовать кнопки s и w, чтобы в нем взаимодействовать(просто через s вернуться нельзя, надо выбрать необходимый пункт меню)
+    int flag_out_program = 0;
+    char sim;
 
-    int flag_out =0;
-    char sim = 0;
+    //Режим принятый пользователем(команда)
     int mode = 0;
+    //Выход из меню
+    int flag_out = 0;
+
     out_str_menu(mode);
     while (flag_out == 0) {
         sim = getch();
@@ -390,29 +363,34 @@ int out_menu(struct film* list_root) {
        if(sim == '\n' || sim == ' ') {
            if (mode == 0){
                system("cls");
-               flag_out = 1;
                out_list_films(list_root);
+               flag_out = 1;
            }
+
            else if (mode == 1) {
                system("cls");
+               flag_out = 1;
                printf("---------Функция списка избранного---------\n");
+
            } else if (mode == 2) {
                system("cls");
+               flag_out = 1;
                printf("---------Функция личного кабинета---------\n");
            }
+
            else if (mode == 3) {
-               return 0;
+               flag_out_program = 1;
            }
+           return flag_out_program;
        }
     }
 
 }
 
-
+//Вывод разных положений указателя в меню
 void out_str_menu(int mode) {
         if (mode == 0) {
-            system("cls");
-            printf("                                                             Меню\n");
+            printf("                                                            Меню\n");
             printf("                                        ");   printf("//========================================\\");printf("\\ \n");
             printf("                                        ");   printf("||                                        ||\n");
             printf("                                        ");   printf("||                                        ||\n");
@@ -424,8 +402,7 @@ void out_str_menu(int mode) {
             printf("                                        ");   printf("||                                        ||\n");
             printf("                                        ");   printf("\\");      printf("\\========================================//\n");
         } else if (mode == 1) {
-            system("cls");
-            printf("                                                             Меню\n");
+            printf("                                                            Меню\n");
             printf("                                        ");   printf("//========================================\\");printf("\\ \n");
             printf("                                        ");   printf("||                                        ||\n");
             printf("                                        ");   printf("||                                        ||\n");
@@ -437,8 +414,7 @@ void out_str_menu(int mode) {
             printf("                                        ");   printf("||                                        ||\n");
             printf("                                        ");   printf("\\");      printf("\\========================================//\n");
         } else if (mode == 2) {
-            system("cls");
-            printf("                                                             Меню\n");
+            printf("                                                            Меню\n");
             printf("                                        ");   printf("//========================================\\");printf("\\ \n");
             printf("                                        ");   printf("||                                        ||\n");
             printf("                                        ");   printf("||                                        ||\n");
@@ -450,8 +426,7 @@ void out_str_menu(int mode) {
             printf("                                        ");   printf("||                                        ||\n");
             printf("                                        ");     printf("\\");      printf("\\========================================//\n");
         } else if (mode == 3) {
-            system("cls");
-            printf("                                                             Меню\n");
+            printf("                                                            Меню\n");
             printf("                                        ");   printf("//========================================\\");printf("\\ \n");
             printf("                                        ");   printf("||                                        ||\n");
             printf("                                        ");   printf("||                                        ||\n");
