@@ -20,16 +20,16 @@ int main() {
     system( "cls" );                 //Очистка консоли
     out_list_films(root_film_catalog);
 
-
+    int flag_catalog = 1;
     //Главный цикл взаимодействия с карточками и меню
     int flag_line_card = 1;       //Флаги, отслеживающие в каком мы сейчас блоке
-    int flag_menu = 0;
-    while(1){
+    int flag_info = 0;
+    while(flag_catalog == 1){
         //Считывание введенного символа
         char sim = getch();
 
         //Перемещение вправо(все взаимодействия могут проходить только если мы не в меню)
-        if(sim == 'd' & flag_menu == 0){          //Очищаем консоль и выводим все, когда в середине правый элемент, перемещаем root
+        if(sim == 'd'){          //Очищаем консоль и выводим все, когда в середине правый элемент, перемещаем root
             system( "cls" );
             flag_line_card = 1;
             out_list_films(root_film_catalog->next);
@@ -38,7 +38,7 @@ int main() {
         }
 
         //Перемещение влево
-        if(sim == 'a' & flag_menu == 0){    //Очищаем консоль и выводим все, когда в середине левый элемент, перемещаем root
+        if(sim == 'a'){    //Очищаем консоль и выводим все, когда в середине левый элемент, перемещаем root
             system( "cls" );
             flag_line_card = 1;
             out_list_films(root_film_catalog->previous);
@@ -46,16 +46,17 @@ int main() {
         }
 
         //Вывод подробной информации
-        if(sim == 's' & flag_line_card == 1 & flag_menu == 0){ //Проверка на текущее наличие подробной информации(если она уже показывается, то 2 раз не надо) + проверка, что мы не в меню
+        if(sim == 's'){ //Проверка на текущее наличие подробной информации(если она уже показывается, то 2 раз не надо) + проверка, что мы не в меню
             flag_line_card = 0;     //Уже не в линии
+            flag_info = 1;
             out_detailed_films(root_film_catalog);
         }
 
 
 
         //Если пользователь не в меню (т.е. в подробной информации или просто в линии карточек), он может добавить фильм в избранное
-        if(sim == 'e' & flag_menu == 0){
-            return_film_favorites(root_film_catalog);        //Пустая функция, принимает значение возвращаемого фильма
+        if(sim == 'e'){
+          //return_film_favorites(root_film_catalog);        //Функция, принимает значение возвращаемого фильма
             printf("                                               Фильм добавлен в избранное");
             sleep(2);
             system( "cls" );
@@ -70,26 +71,20 @@ int main() {
         }
 
 
+        //Открытие меню(пользователь находится на линии карточек)
+        if(sim == 'w' & flag_line_card == 1){
+            system( "cls" );
+            out_menu(root_film_catalog);
+        }
 
         //Закрытие подробной информации(пользователь находится на просмотре подробной информации)
-        if(sim == 'w' & flag_line_card == 0 & flag_menu == 0){
+        else if(sim == 'w' & flag_info == 1){
             flag_line_card = 1;
+            flag_info = 0;
             system( "cls" );
             out_list_films(root_film_catalog);
         }
 
-        //Открытие меню(пользователь находится на линии карточек)
-        else if(sim == 'w' & flag_line_card == 1){
-            flag_line_card = 0;
-            flag_menu = 1;
-            system( "cls" );
-            out_menu();
-        }
-
-        //Условие выхода, желательно реализовать через меню
-        if(sim == 'q'){
-            break;
-        }
     }
 
 

@@ -14,6 +14,11 @@ struct film{
     struct film* previous;
 };
 
+struct user{
+    struct film* favorites;
+};
+
+
 struct film* create_film(char name_film[50], int year_issue, char country[50], char genres[50], float rating);
 
 void create_list_films(FILE *films_storage, struct film* list_root);
@@ -23,8 +28,10 @@ void adding_end(struct  film* list_root, struct  film* added_element);
 void  deletion_start(struct film* list_root);
 
 
-
 void out_list_films(struct film* list_root);
+
+//void working_list_films(struct film* list_root);
+
 
 void out_detailed_films(struct film* list_root);
 
@@ -36,11 +43,15 @@ void out_str_genres_center(char string[], int leight_str);
 void out_str_country_center(char string[], int leight_str);
 
 
+//void return_film_favorites(struct film* film_favorites, struct user* current_user);
+//
+//void deletion_start_favorites(struct user* current_user, char film_name[50]);
 
-void return_film_favorites(struct film* film_favorites);
 
 
-void out_menu();
+int out_menu(struct film* list_root);
+
+void out_str_menu(int mode);
 
 
 #endif

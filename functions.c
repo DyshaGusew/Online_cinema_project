@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <conio.h>
 
 
 //Технические функции для создания списка
@@ -139,7 +140,38 @@ void out_list_films(struct film* list_root){
 
 
 }
-
+//Работа с триплетом
+//void working_list_films(struct film* list_root){
+//    setlocale(LC_ALL, "Russian");
+//
+//    //О боже, сложно понять, но попробуйте
+//    printf("                                                         Меню");
+//    printf("                                                                                                                      %c\n", (char)24);
+//    printf("                                        ");                              printf("//===================================\\");printf("\\ \n");
+//    printf("                                        ");                              printf("||                                   ||\n");
+//    printf("/-----------------------------------\\   ");                              printf("||                                   ||   ");                        printf("/-----------------------------------");printf("\\ ");
+//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+//    out_str_center(list_root->previous->name, 35);printf("   |");out_str_center(list_root->name, 35);      printf("|   ");      out_str_center(list_root->next->name, 35);printf("\n");
+//    out_str_center(list_root->previous->genres, 35);printf("   |");out_str_center(list_root->genres, 35);      printf("|   ");      out_str_center(list_root->next->genres, 35);printf("\n");
+//    printf("|            Рейтинг %.1f            |   ", list_root->previous->rating); printf("||            Рейтинг %.1f            ||   ", list_root->rating);    printf("|            Рейтинг %.1f            |\n", list_root->next->rating);
+//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+//    printf("|                                   |   ");                               printf("||                                   ||   ");                        printf("|                                   |\n");
+//    printf("\\-----------------------------------/   ");                               printf("||                                   ||   ");                        printf("\\-----------------------------------/\n");
+//    printf("                                        ");                               printf("||                                   ||\n");
+//    printf("                                        ");     printf("\\");      printf("\\===================================//\n");
+//    printf("                                            Добавить фильм в избранное - 'e'\n");
+//    printf("                                                           %c\n", (char)25);
+//    printf("                                                  Подробная информация\n");
+//
+//
+//}
 //Вывод подробной информации о фильме
 void out_detailed_films(struct film* list_root){
     printf("                              /---------------------------------------------------------\\\n");
@@ -267,15 +299,169 @@ void out_str_country_center(char string[], int leight_str){
 //---------------------------------------------------------------
 
 //Функции избранного
-void return_film_favorites(struct film* film_favorites){
-    printf("Избранный фильм - %s\n", film_favorites->name);
-}
+
+//Функции избранного
+//void return_film_favorites(struct film* film_favorites, struct user* current_user){
+//    //printf("Избранный фильм - %s\n", film_favorites->name);
+//    struct film* new_film = malloc(sizeof(struct film));
+//    *new_film = *film_favorites;
+//    if (current_user->favorites != NULL){
+//        new_film->next = current_user->favorites->next;
+//        new_film->next->previous = new_film;
+//        new_film->previous = current_user->favorites;
+//        current_user->favorites->next = new_film;
+//    }
+//    else {
+//        new_film->next = new_film;
+//        new_film->previous = new_film;
+//    }
+//    current_user->favorites = new_film;
+//}
+//
+//void deletion_favorites(struct user* current_user, char film_name[50]){
+//    struct film* current_film = current_user->favorites;
+//    if (current_film == NULL){
+//        return;
+//    }
+//    if (strcmp(current_film->name, film_name) == 0){
+//        if(current_film == current_film->next){
+//            current_user->favorites = NULL;
+//            free(current_film);
+//            return;
+//        }
+//        current_user->favorites = current_film->next;
+//        current_film->previous->next = current_film->next;
+//        current_film->next->previous = current_film->previous;
+//        free(current_film);
+//        return;
+//    }
+//    while (current_film->next != current_user->favorites){
+//        current_film = current_film->next;
+//        if (strcmp(current_film->name, film_name) == 0){
+//            current_film->previous->next = current_film->next;
+//            current_film->next->previous = current_film->previous;
+//            free(current_film);
+//            return;
+//        }
+//    }
+//}
+
+/*void save_favorites (struct user* current_user){
+    FILE* favorites = fopen();
+
+}*/
+
+
+
 
 //--------------------------------------------------------------
 //Функции Меню
-void out_menu(){
+int out_menu(struct film* list_root) {
     //Возвращаться к списку фильмов мы уже должны через меню можно опять использовать кнопки s и w, чтобы в нем взаимодействовать(просто через s вернуться нельзя, надо выбрать необходимый пункт меню)
-    printf("Здесь должно находиться меню");
+
+    int flag_out =0;
+    char sim = 0;
+    int mode = 0;
+    out_str_menu(mode);
+    while (flag_out == 0) {
+        sim = getch();
+
+        //Листание вниз
+        if (sim == 's') {
+            mode++;
+            if (mode == 4) {
+                mode = 0;
+            }
+            //Отображение состояния звездочки
+            out_str_menu(mode);
+        }
+
+        //Листание вверх
+        if (sim == 'w') {
+            mode--;
+            if (mode == -1) {
+                mode = 3;
+            }
+            //Отображение состояния звездочки
+            out_str_menu(mode);
+        }
+
+        //Команды меню
+       if(sim == '\n' || sim == ' ') {
+           if (mode == 0){
+               system("cls");
+               flag_out = 1;
+               out_list_films(list_root);
+           }
+           else if (mode == 1) {
+               system("cls");
+               printf("---------Функция списка избранного---------\n");
+           } else if (mode == 2) {
+               system("cls");
+               printf("---------Функция личного кабинета---------\n");
+           }
+           else if (mode == 3) {
+               return 0;
+           }
+       }
+    }
+
 }
 
+
+void out_str_menu(int mode) {
+        if (mode == 0) {
+            system("cls");
+            printf("                                                             Меню\n");
+            printf("                                        ");   printf("//========================================\\");printf("\\ \n");
+            printf("                                        ");   printf("||                                        ||\n");
+            printf("                                        ");   printf("||                                        ||\n");
+            printf("                                        ");   printf("||    Вернуться к каталогу фильмов *      ||\n");
+            printf("                                        ");   printf("||      Посмотреть список избранного      ||\n");
+            printf("                                        ");   printf("||         Открыть личный кабинет         ||\n");
+            printf("                                        ");   printf("||           Выйти из программы           ||\n");
+            printf("                                        ");   printf("||                                        ||\n");
+            printf("                                        ");   printf("||                                        ||\n");
+            printf("                                        ");   printf("\\");      printf("\\========================================//\n");
+        } else if (mode == 1) {
+            system("cls");
+            printf("                                                             Меню\n");
+            printf("                                        ");   printf("//========================================\\");printf("\\ \n");
+            printf("                                        ");   printf("||                                        ||\n");
+            printf("                                        ");   printf("||                                        ||\n");
+            printf("                                        ");   printf("||      Вернуться к каталогу фильмов      ||\n");
+            printf("                                        ");   printf("||    Посмотреть список избранного *      ||\n");
+            printf("                                        ");   printf("||         Открыть личный кабинет         ||\n");
+            printf("                                        ");   printf("||           Выйти из программы           ||\n");
+            printf("                                        ");   printf("||                                        ||\n");
+            printf("                                        ");   printf("||                                        ||\n");
+            printf("                                        ");   printf("\\");      printf("\\========================================//\n");
+        } else if (mode == 2) {
+            system("cls");
+            printf("                                                             Меню\n");
+            printf("                                        ");   printf("//========================================\\");printf("\\ \n");
+            printf("                                        ");   printf("||                                        ||\n");
+            printf("                                        ");   printf("||                                        ||\n");
+            printf("                                        ");   printf("||      Вернуться к каталогу фильмов      ||\n");
+            printf("                                        ");   printf("||      Посмотреть список избранного      ||\n");
+            printf("                                        ");   printf("||       Открыть личный кабинет *         ||\n");
+            printf("                                        ");   printf("||           Выйти из программы           ||\n");
+            printf("                                        ");   printf("||                                        ||\n");
+            printf("                                        ");   printf("||                                        ||\n");
+            printf("                                        ");     printf("\\");      printf("\\========================================//\n");
+        } else if (mode == 3) {
+            system("cls");
+            printf("                                                             Меню\n");
+            printf("                                        ");   printf("//========================================\\");printf("\\ \n");
+            printf("                                        ");   printf("||                                        ||\n");
+            printf("                                        ");   printf("||                                        ||\n");
+            printf("                                        ");   printf("||      Вернуться к каталогу фильмов      ||\n");
+            printf("                                        ");   printf("||      Посмотреть список избранного      ||\n");
+            printf("                                        ");   printf("||         Открыть личный кабинет         ||\n");
+            printf("                                        ");   printf("||        Выйти из программы *            ||\n");
+            printf("                                        ");                              printf("||                                        ||\n");
+            printf("                                        ");                              printf("||                                        ||\n");
+            printf("                                        ");     printf("\\");      printf("\\========================================//\n");
+        }
+    }
 
